@@ -1,0 +1,76 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+
+const productsData = [
+  {
+    id: 1,
+    name: 'MacBook Pro M2',
+    category: 'Laptop',
+    price: 1800,
+    image: 'https://via.placeholder.com/200x150?text=MacBook+Pro',
+  },
+  {
+    id: 2,
+    name: 'iPhone 15 Pro',
+    category: 'Phone',
+    price: 1200,
+    image: 'https://via.placeholder.com/200x150?text=iPhone+15+Pro',
+  },
+  {
+    id: 3,
+    name: 'Sony WH-1000XM5',
+    category: 'Headphones',
+    price: 400,
+    image: 'https://via.placeholder.com/200x150?text=Sony+XM5',
+  },
+  {
+    id: 4,
+    name: 'Apple Watch Ultra 2',
+    category: 'Wearable',
+    price: 800,
+    image: 'https://via.placeholder.com/200x150?text=Watch+Ultra',
+  },
+];
+
+export default function TechShowroom() {
+  const [search, setSearch] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState(productsData);
+
+  useEffect(() => {
+    const results = productsData.filter((product) =>
+      product.name.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredProducts(results);
+  }, [search]);
+
+  return (
+    <div className="p-6 max-w-screen-xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-center">Tech Product Showroom</h1>
+
+      <div className="mb-6 flex justify-center">
+        <Input
+          placeholder="Search for products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full max-w-md"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredProducts.map((product) => (
+          <Card key={product.id} className="hover:scale-105 transition-transform duration-300">
+            <img src={product.image} alt={product.name} className="w-full h-40 object-cover rounded-t" />
+            <CardContent className="p-4">
+              <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
+              <p className="text-gray-600">Category: {product.category}</p>
+              <p className="text-green-600 font-bold mt-2">${product.price}</p>
+              <Button className="mt-4 w-full">View Details</Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
